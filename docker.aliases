@@ -1,0 +1,38 @@
+# Container lifecycle
+alias dps='docker ps'
+alias dpsa='docker ps -a'
+alias dip='docker inspect --format "{{ .NetworkSettings.IPAddress }}" '
+alias dstop='docker stop $(docker ps -a -q)'
+alias drm='docker rm $(docker ps -a -q)'
+dshell ()
+{
+    (docker exec -ti $1 bash) || (docker exec -ti $1 sh);
+}
+
+# Images
+alias dim='docker images'
+alias drim='docker rmi $(docker images -a -q)'
+
+# Volumes
+alias drmvolumes='docker volume ls | awk '\''{print }'\'' | grep -v VOLUME | xargs docker volume rm'
+
+# Compose
+alias dc='docker-compose'
+alias dcps='docker-compose ps'
+alias dcup='docker-compose up'
+alias dcdw='docker-compose down'
+
+# Machine
+alias dm='docker-machine '
+alias dmactive='docker-machine active'
+alias dmls='docker-machine ls'
+dmcv ()
+{
+    docker-machine create -d virtualbox $1;
+    docker-machine ls
+}
+dmuse ()
+{
+    eval "$(docker-machine env $1)";
+    docker-machine ls
+}
